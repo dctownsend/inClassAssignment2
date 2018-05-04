@@ -2,59 +2,96 @@
 //  DayOfYear.cpp
 //  homework
 //
-//  Created by dakota townsend on 5/1/18.
+//  Created by dakota townsend on 5/3/18.
 //  Copyright © 2018 dakota townsend. All rights reserved.
 //
 
-#include "DayOfYear.hpp"
-#include<string>
+#include <stdio.h>
+#include <string>
 #include <iostream>
+
 using namespace std;
 
-string DayOfYear:: dayMonth = "";
-int DayOfYear:: restDays = 0;
+class DayOfYear {
+    public:
+    DayOfYear(int day);
+    DayOfYear(string month, int days);
+    
+    void print();
+    DayOfYear& operator ++();
+    DayOfYear& operator --();
+    
+    private:
+    int day_year;
+    int day_month;
+    string month_name;
+};
 
-DayOfYear:: DayOfYear(int d){
-    days = d;
+string month_names(int month_number) {
+    string month_names[] = { "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December" };
+    return month_names[month_number];
 }
-void DayOfYear::setEndOfMonths() {
-    endOfMonths[0] = 0;
-    endOfMonths[1] = 31;
-    endOfMonths[2] = 59;
-    endOfMonths[3] = 90;
-    endOfMonths[4] = 120;
-    endOfMonths[5] = 151;
-    endOfMonths[6] = 181;
-    endOfMonths[7] = 212;
-    endOfMonths[8] = 243;
-    endOfMonths[9] = 273;
-    endOfMonths[10] = 304;
-    endOfMonths[11] = 334;
-    endOfMonths[12] = 365;
+
+int month_days(int month_number){
+    int months_days[] = {31, 28, 31, 30, 31, 30,
+        31, 31, 30, 31, 30, 31 };
+    return month_days[month_number];
+};
+
+DayOfYear:: DayOfYear(int day) {
+    day_year = day;
+    day_month = day_month;
+    int i = 0;
     
+    while(1) {
+        if (day_month <= month_days(i)) {
+            month_name = month_names(i);
+            break;
+        
+    } else {
+        day_month = day_month - month_days(i++);
+        i = i % 12;
+    }
+  }
 }
-void DayOfYear:: setMonth() {
-    
-    months[0] = "January";
-    months[1] = "February";
-    months[2] = "March";
-    months[3] = "April";
-    months[4] = "May";
-    months[5] = "June";
-    months[6] = "July";
-    months[7] = "August";
-    months[8] = "September";
-    months[9] = "October";
-    months[10] = "November";
-    months[11] = "December";
-    
+
+DayOfYear:: DayOfYear(string month, int day) {
+    for(int i = 0; i <12; i++)
+    if(month_names(i) == month){
+        if(day > 0 && day <= month_days(i)) {
+            month_name = month;
+            day_month = day;
+            day_year = 0;
+            for(int j = 0; j < 12; j++) {
+                day_year += month_days(j);
+                day_year += day;
+            }
+        } else {
+            cout << "incorrect date";
+            exit(0);
+        }
+    }
 }
+
 void DayOfYear:: print() {
-    int month = 0;
-    while(endOfMonths[month] < days)
-        month++;
-    dayMonth += months[month - 1];
-    restDays += days - endOfMonths[month - 1];
-    
-    cout << "\nthe day is: " << dayMonth << " " << restDays << "\n";
+    cout "Day " << day_year << " would be " << month_name
+    << "" << day_month << "\n";
+}
+
+DayOfYear& DayOfYear:: operator++() {
+    day_month = day_month + 1;
+    day_year = day_year + 1;
+    for (int i = 0; i < 12; i++)
+    if(month_name == month_names(i)) {
+        if (day_month > month_name(i)) {
+            day_month = 1;
+            month_name = month_names((i + 1) % 12);
+            if(i == 11)
+            day_year = 1;
+        }
+        break;
+    }
+    return *this;
 }
